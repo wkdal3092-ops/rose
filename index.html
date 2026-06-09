@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIM WOO SANG // ARCHITECTURAL MONOGRAPH</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Playfair Display (Serif) & Space Grotesk / Space Mono for Technical Vibe -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for ultra-sharp vector graphics -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Three.js for parametric structural rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                        mono: ['Space Mono', 'monospace'],
+                    },
+                    colors: {
+                        studioBg: '#fcfcfc', // Pure Gallery White
+                        studioInk: '#09090b', // Deep Charcoal (Almost Black)
+                        studioMuted: '#71717a', // Slate Muted
+                        studioBorder: '#e4e4e7', // Fine grid gray
+                        studioAccent: '#18181b', // Technical black
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #fcfcfc;
+            color: #09090b;
+            font-feature-settings: "ss01" on, "ss02" on;
+        }
+        
+        /* Technical drafting paper grid overlay */
+        .drafting-grid {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(228, 228, 231, 0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(228, 228, 231, 0.4) 1px, transparent 1px);
+        }
+        
+        /* Custom Fine Thin Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fcfcfc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #18181b;
+        }
+
+        /* Image Masking Transitions */
+        .reveal-mask {
+            clip-path: inset(0 100% 0 0);
+            transition: clip-path 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+        .reveal-mask.active {
+            clip-path: inset(0 0 0 0);
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden drafting-grid">
+
+    <!-- Minimal Monolith Header -->
+    <header class="fixed top-0 left-0 w-full z-50 border-b border-studioBorder bg-studioBg/85 backdrop-blur-md">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 py-5 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-6 group">
+                <span class="font-mono text-xs tracking-widest text-studioInk font-bold border border-studioInk px-2 py-1 group-hover:bg-studioInk group-hover:text-studioBg transition-all duration-300">KWS.A</span>
+                <span class="font-serif tracking-[0.2em] text-sm font-bold uppercase hidden sm:inline-block">WOO SANG KIM ARCHITECTS</span>
+            </a>
+            
+            <nav class="hidden md:flex items-center gap-10 font-mono text-[11px] tracking-[0.2em] text-studioMuted">
+                <a href="#philosophy" class="hover:text-studioInk transition duration-300">I. PHILOSOPHY</a>
+                <a href="#projects" class="hover:text-studioInk transition duration-300">II. SELECTED ARCHIVES</a>
+                <a href="#computational-lab" class="hover:text-studioInk transition duration-300">III. COMPUTATIONAL LAB</a>
+                <a href="#contact" class="hover:text-studioInk transition duration-300 border border-studioBorder px-4 py-2 hover:border-studioInk rounded-sm bg-studioBg">GET IN TOUCH</a>
+            </nav>
+
+            <button class="md:hidden text-studioInk" onclick="toggleMenu()">
+                <i data-lucide="menu" id="navIcon" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Editorial Navigation -->
+        <div id="mobileNav" class="hidden md:hidden border-t border-studioBorder bg-studioBg/95 px-6 py-8 space-y-6 font-mono text-xs tracking-widest">
+            <a href="#philosophy" class="block text-studioMuted hover:text-studioInk" onclick="toggleMenu()">I. PHILOSOPHY</a>
+            <a href="#projects" class="block text-studioMuted hover:text-studioInk" onclick="toggleMenu()">II. SELECTED ARCHIVES</a>
+            <a href="#computational-lab" class="block text-studioMuted hover:text-studioInk" onclick="toggleMenu()">III. COMPUTATIONAL LAB</a>
+            <a href="#contact" class="block text-studioInk font-bold border-t border-studioBorder pt-4" onclick="toggleMenu()">GET IN TOUCH</a>
+        </div>
+    </header>
+
+    <!-- Hero Monograph Entry -->
+    <section class="relative min-h-screen flex items-end justify-center pt-24 pb-16 lg:pb-24">
+        <!-- Structural Crosshair Decorations for Drafting Feeling -->
+        <div class="absolute top-32 left-12 font-mono text-[9px] text-studioMuted tracking-wider hidden lg:block">
+            LAT. 37.5665° N / LONG. 126.9780° E<br>METROPOLITAN CONTEXT
+        </div>
+        <div class="absolute right-12 top-32 w-12 h-12 border-t border-r border-studioBorder hidden lg:block"></div>
+        <div class="absolute left-12 bottom-12 w-12 h-12 border-b border-l border-studioBorder hidden lg:block"></div>
+
+        <div class="max-w-[1600px] w-full mx-auto px-6 lg:px-12 grid lg:grid-cols-12 gap-12 items-end">
+            <div class="lg:col-span-8 space-y-8">
+                <span class="font-mono text-xs tracking-[0.25em] text-studioMuted uppercase flex items-center gap-2">
+                    <span class="w-2 h-[1px] bg-studioMuted"></span> DIGITAL MONOGRAPH VOL. 03
+                </span>
+                <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serif leading-[1.1] font-bold text-studioInk tracking-tight">
+                    Void, Air and <br class="hidden sm:block">
+                    <span class="italic font-normal">Parametric Tectonics.</span>
+                </h1>
+                <p class="font-mono text-xs text-studioMuted tracking-wide max-w-xl leading-relaxed">
+                    대지의 침묵에서 출발하여 형태를 비워내고(Void), 비워진 자리에 바람과 빛의 유동적 데이터를 대입하는 기술적 리얼리즘을 지향합니다.
+                </p>
+                <div class="flex flex-wrap gap-4 pt-4">
+                    <a href="#projects" class="bg-studioInk text-studioBg px-8 py-4 font-mono text-xs tracking-widest hover:opacity-90 transition flex items-center gap-3">
+                        VIEW ARCHIVES <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#computational-lab" class="border border-studioBorder bg-white text-studioInk px-8 py-4 font-mono text-xs tracking-widest hover:border-studioInk transition flex items-center gap-3">
+                        LAUNCH 3D LAB <i data-lucide="terminal" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="lg:col-span-4 border-l border-studioBorder pl-6 lg:pl-10 pb-2 space-y-4">
+                <div class="font-mono text-[10px] text-studioMuted">CURRENT EXHIBIT</div>
+                <h4 class="font-serif font-bold text-lg text-studioInk">The Void Canopy Pavilion</h4>
+                <p class="text-xs text-studioMuted font-light leading-relaxed">
+                    구조용 다중 만곡 패널과 유전 알고리즘을 이용한 기하학적 형태 생성 및 조망 효율 분석 프로젝트.
+                </p>
+                <div class="pt-2">
+                    <span class="font-mono text-xs text-studioInk font-semibold border-b border-studioInk pb-1">COMPLETED 2026</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monograph Chapter 01: Philosophy -->
+    <section id="philosophy" class="py-24 border-t border-b border-studioBorder bg-white">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-12 gap-16 items-start">
+                <div class="lg:col-span-4 space-y-6">
+                    <span class="font-mono text-xs text-studioMuted tracking-[0.3em] block">CHAPTER I</span>
+                    <h2 class="text-3xl sm:text-5xl font-serif font-bold tracking-tight text-studioInk">The Silent Integration.</h2>
+                    <p class="font-mono text-xs text-studioMuted leading-relaxed">
+                        화려한 조형 과시보다 대지가 오랫동안 간직해 온 미세한 맥락과 동적 바람길을 읽어내어 공간에 통합시킵니다.
+                    </p>
+                </div>
+                <div class="lg:col-span-8 grid sm:grid-cols-2 gap-12 pt-8 lg:pt-0">
+                    <div class="space-y-4">
+                        <span class="font-mono text-xs text-studioInk font-bold">01 / COMPUTATIONAL ANALYSIS</span>
+                        <p class="text-sm text-studioMuted leading-relaxed font-light">
+                            기존의 감각적 형태 스케치 방식에서 벗어나 태양 광선 추적, 주변 건물 조망 가림막 차단율, 유체역학 시뮬레이션을 Grasshopper 환경에서 계량화하여 디자인의 논리적 근거를 수립합니다.
+                        </p>
+                    </div>
+                    <div class="space-y-4">
+                        <span class="font-mono text-xs text-studioInk font-bold">02 / ENVIRONMENT & SUSTAINABILITY</span>
+                        <p class="text-sm text-studioMuted leading-relaxed font-light">
+                            구조체 스스로가 탄소를 저장하는 고밀도 CLT(Cross-Laminated Timber) 공법과 이중 외피 공기 순환 파사드를 활용해 환경 부하를 극도로 감소시키는 친환경 제로 에너지 설계를 완성합니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Monograph Chapter 02: Projects with Phase Views -->
+    <section id="projects" class="py-24 bg-studioBg">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-16 gap-8 border-b border-studioBorder pb-8">
+                <div>
+                    <span class="font-mono text-xs text-studioMuted tracking-[0.3em] block">CHAPTER II</span>
+                    <h2 class="text-4xl lg:text-5xl font-serif font-bold text-studioInk">Selected Works.</h2>
+                </div>
+                
+                <!-- Advanced Sorting Filter -->
+                <div class="flex flex-wrap gap-3 font-mono text-[10px] tracking-widest">
+                    <button onclick="filterWorks('all')" id="filter-all" class="px-4 py-2 border border-studioInk bg-studioInk text-studioBg transition-all duration-300">00 / ALL</button>
+                    <button onclick="filterWorks('civic')" id="filter-civic" class="px-4 py-2 border border-studioBorder text-studioMuted hover:border-studioInk hover:text-studioInk transition-all duration-300">01 / CIVIC & CULTURAL</button>
+                    <button onclick="filterWorks('ecology')" id="filter-ecology" class="px-4 py-2 border border-studioBorder text-studioMuted hover:border-studioInk hover:text-studioInk transition-all duration-300">02 / ECO & SUSTAINABLE</button>
+                    <button onclick="filterWorks('parametric')" id="filter-parametric" class="px-4 py-2 border border-studioBorder text-studioMuted hover:border-studioInk hover:text-studioInk transition-all duration-300">03 / PARAMETRIC SKIN</button>
+                </div>
+            </div>
+
+            <!-- Highly Professional Architectural Project Showcase -->
+            <div class="grid lg:grid-cols-3 gap-10" id="projectGrid">
+                
+                <!-- Project Node 01 -->
+                <div class="work-node bg-white border border-studioBorder p-6 hover:shadow-2xl transition-all duration-500 flex flex-col justify-between" data-category="civic">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center font-mono text-[10px] text-studioMuted">
+                            <span>PROJECT ID: 2026-VOID</span>
+                            <span>SEOUL, KOREA</span>
+                        </div>
+                        
+                        <!-- Mini Multi-Phase Interactive Viewer inside Card -->
+                        <div class="relative group overflow-hidden border border-studioBorder">
+                            <img id="view-1-img" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80" alt="Void Gallery" class="w-full aspect-[4/3] object-cover group-hover:scale-103 transition duration-700">
+                            <!-- Floating Phase Tabs -->
+                            <div class="absolute bottom-3 left-3 flex gap-1 font-mono text-[8px] bg-studioInk/80 backdrop-blur-sm p-1 rounded-sm">
+                                <button onclick="changePhase('1', 'render', 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-1 px-2 py-1 bg-studioBg text-studioInk font-bold">RENDERING</button>
+                                <button onclick="changePhase('1', 'diagram', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-1 px-2 py-1 text-studioBg/70 hover:text-studioBg">MASS STRUCT</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-studioInk hover:text-studioMuted transition cursor-pointer" onclick="openSpecModal('void')">The Void Monolith Art Museum</h3>
+                            <p class="text-xs text-studioMuted leading-relaxed font-light">과감하게 도려낸 단일 중정을 통과하는 연중 일조량 시뮬레이션 데이터를 입면에 적용한 콘크리트 박스 뮤지엄.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-studioBorder pt-4 mt-6 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-studioMuted">GFA: 3,450 m²</span>
+                        <button onclick="openSpecModal('void')" class="text-studioInk font-bold underline flex items-center gap-1">SPEC LOG <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+
+                <!-- Project Node 02 -->
+                <div class="work-node bg-white border border-studioBorder p-6 hover:shadow-2xl transition-all duration-500 flex flex-col justify-between" data-category="ecology">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center font-mono text-[10px] text-studioMuted">
+                            <span>PROJECT ID: 2025-ECO</span>
+                            <span>JEJU, KOREA</span>
+                        </div>
+                        
+                        <div class="relative group overflow-hidden border border-studioBorder">
+                            <img id="view-2-img" src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80" alt="Eco Basalt" class="w-full aspect-[4/3] object-cover group-hover:scale-103 transition duration-700">
+                            <div class="absolute bottom-3 left-3 flex gap-1 font-mono text-[8px] bg-studioInk/80 backdrop-blur-sm p-1 rounded-sm">
+                                <button onclick="changePhase('2', 'render', 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-2 px-2 py-1 bg-studioBg text-studioInk font-bold">RENDERING</button>
+                                <button onclick="changePhase('2', 'diagram', 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-2 px-2 py-1 text-studioBg/70 hover:text-studioBg">SITE WIND</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-studioInk hover:text-studioMuted transition cursor-pointer" onclick="openSpecModal('basalt')">Basalt Eco Wetland Center</h3>
+                            <p class="text-xs text-studioMuted leading-relaxed font-light">제주 바람길 분석 데이터를 유선형 볼륨으로 치환하여 탄소 유출을 통제하고 제로 에너지 가치를 추구하는 목구조 도서관.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-studioBorder pt-4 mt-6 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-studioMuted">GFA: 1,820 m²</span>
+                        <button onclick="openSpecModal('basalt')" class="text-studioInk font-bold underline flex items-center gap-1">SPEC LOG <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+
+                <!-- Project Node 03 -->
+                <div class="work-node bg-white border border-studioBorder p-6 hover:shadow-2xl transition-all duration-500 flex flex-col justify-between" data-category="parametric">
+                    <div class="space-y-6">
+                        <div class="flex justify-between items-center font-mono text-[10px] text-studioMuted">
+                            <span>PROJECT ID: 2025-SKIN</span>
+                            <span>BUSAN, KOREA</span>
+                        </div>
+                        
+                        <div class="relative group overflow-hidden border border-studioBorder">
+                            <img id="view-3-img" src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80" alt="Kinetic Facade" class="w-full aspect-[4/3] object-cover group-hover:scale-103 transition duration-700">
+                            <div class="absolute bottom-3 left-3 flex gap-1 font-mono text-[8px] bg-studioInk/80 backdrop-blur-sm p-1 rounded-sm">
+                                <button onclick="changePhase('3', 'render', 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-3 px-2 py-1 bg-studioBg text-studioInk font-bold">RENDERING</button>
+                                <button onclick="changePhase('3', 'diagram', 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80', event)" class="phase-btn-3 px-2 py-1 text-studioBg/70 hover:text-studioBg">KINETIC SIM</button>
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h3 class="font-serif font-bold text-xl text-studioInk hover:text-studioMuted transition cursor-pointer" onclick="openSpecModal('kinetic')">Flow Dynamic Kinetic Tower</h3>
+                            <p class="text-xs text-studioMuted leading-relaxed font-light">컴퓨테이션 궤적 분석 루프를 연동하여 실시간으로 계절별 서측 태양의 고열 투과율을 조절하는 스마트 피봇 루버 시스템 타워.</p>
+                        </div>
+                    </div>
+                    <div class="border-t border-studioBorder pt-4 mt-6 flex justify-between items-center font-mono text-[11px]">
+                        <span class="text-studioMuted">GFA: 42,000 m²</span>
+                        <button onclick="openSpecModal('kinetic')" class="text-studioInk font-bold underline flex items-center gap-1">SPEC LOG <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i></button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Monograph Chapter 03: Interactive 3D Computational Canopy Lab -->
+    <section id="computational-lab" class="py-24 bg-white border-t border-b border-studioBorder">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <!-- 3D Computational UI Controls -->
+                <div class="lg:col-span-5 space-y-8">
+                    <div>
+                        <span class="font-mono text-xs text-studioMuted tracking-[0.3em] block">CHAPTER III</span>
+                        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-studioInk mt-2">Parametric Canopy Lab</h2>
+                        <p class="text-xs text-studioMuted mt-4 leading-relaxed font-light">
+                            실제 그래스호퍼(Grasshopper) 연산 방식을 3D 웹 캔버스로 구성했습니다. 파빌리온 구조의 기하학적 매개변수(Parameter)를 조절하며 입면과 부재의 물리 조건이 변경되는 유기적인 연결 과정을 시뮬레이션해 보세요. 우측 공간을 드래그하여 다각도로 탐색할 수 있습니다.
+                        </p>
+                    </div>
+
+                    <!-- Controller Panel (Blueprint Aesthetic) -->
+                    <div class="p-8 border border-studioBorder bg-studioBg space-y-6">
+                        <div class="flex justify-between items-center font-mono text-[10px] text-studioMuted border-b border-studioBorder pb-2">
+                            <span>ALGORITHM INPUTS (GENETIC SEEDS)</span>
+                            <span>v3.4 PROTOTYPE</span>
+                        </div>
+
+                        <!-- Param 01: Wave Sine Amplitude -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center font-mono text-xs">
+                                <span class="font-bold text-studioInk">01 / CANOPY WAVINESS (곡률 진폭)</span>
+                                <span id="waveVal" class="text-studioMuted">0.35 A</span>
+                            </div>
+                            <input type="range" id="waveAmp" min="0" max="1" step="0.05" value="0.35" class="w-full accent-studioAccent bg-studioBorder h-1 rounded cursor-pointer">
+                        </div>
+
+                        <!-- Param 02: Ribbon Count -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center font-mono text-xs">
+                                <span class="font-bold text-studioInk">02 / RIBS DENSITY (구조 프레임 밀도)</span>
+                                <span id="ribVal" class="text-studioMuted">16 Ribs</span>
+                            </div>
+                            <input type="range" id="ribCount" min="8" max="32" value="16" class="w-full accent-studioAccent bg-studioBorder h-1 rounded cursor-pointer">
+                        </div>
+
+                        <!-- Param 03: Lattice Twist -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between items-center font-mono text-xs">
+                                <span class="font-bold text-studioInk">03 / FORM TWIST (모프 비틀림)</span>
+                                <span id="twistVal" class="text-studioMuted">0.15 rad</span>
+                            </div>
+                            <input type="range" id="morphTwist" min="0" max="1.5" step="0.05" value="0.15" class="w-full accent-studioAccent bg-studioBorder h-1 rounded cursor-pointer">
+                        </div>
+
+                        <!-- Param 04: Visual Style Dynamic Engine Toggle -->
+                        <div class="space-y-3">
+                            <span class="font-mono text-xs font-bold text-studioInk block">04 / FABRICATION STYLE (외장재 공법)</span>
+                            <div class="grid grid-cols-3 gap-2 font-mono text-[9px] tracking-wider">
+                                <button onclick="setLabMaterial('steel-wire')" id="lab-wire" class="py-3 border border-studioInk bg-studioInk text-studioBg font-bold transition">TENSION WIRE</button>
+                                <button onclick="setLabMaterial('clt-slab')" id="lab-clt" class="py-3 border border-studioBorder text-studioMuted hover:text-studioInk hover:border-studioInk transition">CLT SLAB</button>
+                                <button onclick="setLabMaterial('etfe-skin')" id="lab-etfe" class="py-3 border border-studioBorder text-studioMuted hover:text-studioInk hover:border-studioInk transition">ETFE PANEL</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3D WebGL Canvas Interactive Monitor -->
+                <div class="lg:col-span-7 relative h-[500px] sm:h-[600px] border border-studioBorder bg-white overflow-hidden shadow-sm">
+                    <!-- Status Header Overlay -->
+                    <div class="absolute top-4 left-4 z-20 flex flex-col gap-1 font-mono text-[9px] text-studioMuted pointer-events-none">
+                        <span>SYS_STATUS: READY // ACTIVE SHADOWS ON</span>
+                        <span>GRID INTERVAL: 1.0M STRUCTURAL UNIT</span>
+                    </div>
+
+                    <div class="absolute top-4 right-4 z-20 flex gap-2">
+                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-studioBg border border-studioBorder text-[9px] font-mono font-bold text-studioInk">
+                            <i data-lucide="scan-eye" class="w-3.5 h-3.5"></i> DRAG / SCROLL TO ROTATE & ZOOM
+                        </span>
+                    </div>
+
+                    <!-- Main Canvas Holder -->
+                    <div id="threeEngineContainer" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 04: Digital Spec Timeline & Journey -->
+    <section class="py-24 bg-studioBg">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-4">
+                <span class="font-mono text-xs text-studioMuted tracking-[0.3em] block">CHAPTER IV</span>
+                <h2 class="text-3xl sm:text-5xl font-serif font-bold text-studioInk">Architectural Log.</h2>
+                <p class="font-mono text-xs text-studioMuted leading-relaxed font-light">지속가능한 디자인 프로세스와 연산 도구 개발 능력을 증명하는 교육적, 실무적 기록.</p>
+            </div>
+
+            <!-- Highly Detailed Technical Log Sheet -->
+            <div class="max-w-4xl mx-auto border border-studioBorder bg-white font-mono text-xs">
+                
+                <!-- Row Header -->
+                <div class="grid grid-cols-12 gap-4 border-b border-studioBorder bg-studioBg p-4 font-bold text-studioMuted tracking-wider">
+                    <div class="col-span-2 text-[10px]">YEAR</div>
+                    <div class="col-span-4 text-[10px]">LOCATION / INSTITUTION</div>
+                    <div class="col-span-4 text-[10px]">RECORD & ACHIEVEMENTS</div>
+                    <div class="col-span-2 text-right text-[10px]">STATUS</div>
+                </div>
+
+                <!-- Row 01 -->
+                <div class="grid grid-cols-12 gap-4 border-b border-studioBorder p-5 hover:bg-studioBg/40 transition">
+                    <div class="col-span-2 font-bold text-studioInk">2026</div>
+                    <div class="col-span-4 space-y-1">
+                        <h4 class="font-bold text-studioInk">A-H LAB PARTNERS</h4>
+                        <p class="text-[10px] text-studioMuted">Computational Design Specialist</p>
+                    </div>
+                    <div class="col-span-4 text-studioMuted leading-relaxed">
+                        실시간 기후 연계 파사드 제너레이터 툴킷 연구 개발 및 주요 대단지 생태 조경 최적 배치 시스템 가동.
+                    </div>
+                    <div class="col-span-2 text-right text-emerald-600 font-bold">CURRENT RUN</div>
+                </div>
+
+                <!-- Row 02 -->
+                <div class="grid grid-cols-12 gap-4 border-b border-studioBorder p-5 hover:bg-studioBg/40 transition">
+                    <div class="col-span-2 font-bold text-studioInk">2025</div>
+                    <div class="col-span-4 space-y-1">
+                        <h4 class="font-bold text-studioInk">젊은 건축 공모전 대상</h4>
+                        <p class="text-[10px] text-studioMuted">국토교통부 주관</p>
+                    </div>
+                    <div class="col-span-4 text-studioMuted leading-relaxed">
+                        제주 생태 습지 복원 센터 현무암 다이어그램 모델 설계 및 수직 난방 분석 로직 출품으로 종합 1위 대상 수상.
+                    </div>
+                    <div class="col-span-2 text-right text-studioInk font-bold">ARCHIVED</div>
+                </div>
+
+                <!-- Row 03 -->
+                <div class="grid grid-cols-12 gap-4 border-b border-studioBorder p-5 hover:bg-studioBg/40 transition">
+                    <div class="col-span-2 font-bold text-studioInk">2024</div>
+                    <div class="col-span-4 space-y-1">
+                        <h4 class="font-bold text-studioInk">서울대학교 대학원 건축학</h4>
+                        <p class="text-[10px] text-studioMuted">M.Arch Master Degree</p>
+                    </div>
+                    <div class="col-span-4 text-studioMuted leading-relaxed">
+                        ‘다목적 유전 알고리즘을 이용한 입면 이중 외피 루버 각도 최적 제어 시스템 연구’ 논문 통과 및 최우수 졸업.
+                    </div>
+                    <div class="col-span-2 text-right text-studioInk font-bold">ARCHIVED</div>
+                </div>
+
+                <!-- Row 04 -->
+                <div class="grid grid-cols-12 gap-4 p-5 hover:bg-studioBg/40 transition">
+                    <div class="col-span-2 font-bold text-studioInk">2022</div>
+                    <div class="col-span-4 space-y-1">
+                        <h4 class="font-bold text-studioInk">공동주택 리모델링 최우수상</h4>
+                        <p class="text-[10px] text-studioMuted">서울시 기획 본부</p>
+                    </div>
+                    <div class="col-span-4 text-studioMuted leading-relaxed">
+                        도심 소외 지역 리모델링 공모전에서 세대 가변식 힌지형 월(Wall) 구조 제안으로 최우수상 당선.
+                    </div>
+                    <div class="col-span-2 text-right text-studioInk font-bold">ARCHIVED</div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Chapter 05: Minimal Contact Monolith -->
+    <section id="contact" class="py-24 bg-white border-t border-studioBorder">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
+            <div class="grid lg:grid-cols-12 gap-16">
+                <!-- Branding Context -->
+                <div class="lg:col-span-5 space-y-8">
+                    <span class="font-mono text-xs text-studioMuted tracking-[0.3em] block">CHAPTER V</span>
+                    <h2 class="text-3xl sm:text-5xl font-serif font-bold text-studioInk">Initiate Synergy.</h2>
+                    <p class="font-mono text-xs text-studioMuted leading-relaxed font-light">
+                        개념 구상, 컴퓨테이셔널 형상 디벨롭, 친환경 단열 분석 컨설팅 등 대지의 한계를 극복하고 시너지를 낼 설계 의뢰를 환영합니다.
+                    </p>
+
+                    <div class="space-y-6 pt-6 font-mono text-xs">
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 border border-studioBorder flex items-center justify-center text-studioInk bg-studioBg">
+                                <i data-lucide="mail" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <p class="text-[9px] text-studioMuted">DIRECT INBOX</p>
+                                <a href="mailto:contact@kws-architects.com" class="font-bold hover:underline">contact@kws-architects.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <span class="w-10 h-10 border border-studioBorder flex items-center justify-center text-studioInk bg-studioBg">
+                                <i data-lucide="navigation" class="w-4 h-4"></i>
+                            </span>
+                            <div>
+                                <p class="text-[9px] text-studioMuted">ARCHIVE STUDIO</p>
+                                <p class="font-bold">서울특별시 마포구 성수디지털 타워 402호</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editorial Contact Form -->
+                <div class="lg:col-span-7">
+                    <form onsubmit="handleInquirySubmit(event)" class="border border-studioBorder p-8 bg-studioBg space-y-6 font-mono text-xs">
+                        <div class="grid sm:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="block font-bold text-studioInk">01 / NAME (의뢰인 성함)</label>
+                                <input type="text" required placeholder="홍길동" class="w-full bg-white border border-studioBorder px-4 py-3 focus:outline-none focus:border-studioInk transition rounded-sm">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="block font-bold text-studioInk">02 / EMAIL OR TEL (연락처)</label>
+                                <input type="text" required placeholder="inbox@example.com" class="w-full bg-white border border-studioBorder px-4 py-3 focus:outline-none focus:border-studioInk transition rounded-sm">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block font-bold text-studioInk">03 / INQUIRY CLASSIFICATION (설계 성격)</label>
+                            <select class="w-full bg-white border border-studioBorder px-4 py-3 focus:outline-none focus:border-studioInk transition rounded-sm text-studioMuted font-medium">
+                                <option>비정형 파빌리온 및 파사드 협업 (Computational Work)</option>
+                                <option>친환경/문화 도서관 설계 기획 (Eco-Friendly / Civic Design)</option>
+                                <option>주거 공간 및 단지 기획 (Eco Residential Block)</option>
+                            </select>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="block font-bold text-studioInk">04 / PROJECT SCOPE DESCRIPTION (세부 개요 및 요구 조건)</label>
+                            <textarea rows="5" required placeholder="대지 위치, 규모, 목표 패시브하우스 인증 레벨 등의 예비 조건들을 기재해 주십시오." class="w-full bg-white border border-studioBorder px-4 py-3 focus:outline-none focus:border-studioInk transition rounded-sm"></textarea>
+                        </div>
+
+                        <button type="submit" class="w-full py-4 bg-studioInk text-studioBg font-bold tracking-widest hover:opacity-95 transition">
+                            TRANSMIT SPEC SHEET (의뢰 송신)
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Monograph Summary -->
+    <footer class="py-12 bg-white border-t border-studioBorder font-mono text-[10px]">
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 flex flex-col sm:flex-row justify-between items-center gap-6 text-studioMuted">
+            <p>&copy; 2026 WOO SANG KIM ARCHITECTURAL ARCHIVE. ALL RIGHTS RESERVED IN RAW TECH.</p>
+            <div class="flex gap-6">
+                <a href="#" class="hover:text-studioInk transition">IG_PORTFOLIO</a>
+                <a href="#" class="hover:text-studioInk transition">GH_REPOS</a>
+                <a href="#" class="hover:text-studioInk transition">DEZEEN_FEATURED</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Premium Custom Monograph Modal (Structural Spec Layout) -->
+    <div id="specModal" class="fixed inset-0 z-50 bg-studioInk/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="max-w-4xl w-full bg-white border border-studioBorder rounded-sm overflow-hidden max-h-[90vh] overflow-y-auto" onclick="event.stopPropagation()">
+            <!-- Image Frame -->
+            <div class="aspect-[21/9] relative border-b border-studioBorder">
+                <img id="modalImg" src="" alt="Spec Monograph Detail" class="w-full h-full object-cover">
+                <button onclick="closeSpecModal()" class="absolute top-4 right-4 bg-studioBg p-2 border border-studioBorder text-studioInk hover:bg-studioInk hover:text-studioBg transition-all rounded-sm">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
+            </div>
+
+            <!-- Modal Contents (Ultra Clean Editorial Layout) -->
+            <div class="p-8 space-y-8 font-mono text-xs">
+                <div class="flex flex-wrap justify-between items-start gap-4 border-b border-studioBorder pb-6">
+                    <div class="space-y-1">
+                        <span id="modalMeta" class="text-[10px] text-studioMuted">CAT: STRUCTURAL FORMULATION</span>
+                        <h3 id="modalTitle" class="text-2xl font-serif font-bold text-studioInk tracking-tight">Void Monolith Art Museum</h3>
+                        <p id="modalLoc" class="text-[10px] text-studioMuted">SEOUL, KOREA // 2026</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <span class="px-3 py-1 border border-studioBorder bg-studioBg font-bold text-studioInk">ALT-03 DESIGNATED</span>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-12 gap-8">
+                    <!-- Project Core Concept -->
+                    <div class="md:col-span-8 space-y-4">
+                        <h4 class="font-serif text-base font-bold text-studioInk">DESIGN CRITERIA & TECTONIC LOGIC</h4>
+                        <p id="modalDesc1" class="text-studioMuted leading-relaxed font-light">
+                            설명 준비중...
+                        </p>
+                        <p id="modalDesc2" class="text-studioMuted leading-relaxed font-light">
+                            설명 준비중...
+                        </p>
+                    </div>
+
+                    <!-- Tech Sheet Sidebar -->
+                    <div class="md:col-span-4 p-5 bg-studioBg border border-studioBorder space-y-4 self-start">
+                        <h5 class="font-bold text-studioInk border-b border-studioBorder pb-2 text-[10px] tracking-wider">PROJECT TECH SPEC</h5>
+                        <ul class="space-y-2 text-[10px]">
+                            <li class="flex justify-between border-b border-studioBorder/50 pb-1">
+                                <span class="text-studioMuted">연면적 (GFA)</span>
+                                <span id="specGfa" class="font-bold text-studioInk">3,450 ㎡</span>
+                            </li>
+                            <li class="flex justify-between border-b border-studioBorder/50 pb-1">
+                                <span class="text-studioMuted">구조 형식</span>
+                                <span id="specStruct" class="font-bold text-studioInk">CLT / Concrete</span>
+                            </li>
+                            <li class="flex justify-between border-b border-studioBorder/50 pb-1">
+                                <span class="text-studioMuted">담당 역할</span>
+                                <span id="specRole" class="font-bold text-studioInk">Lead Architect</span>
+                            </li>
+                            <li class="flex justify-between pb-1">
+                                <span class="text-studioMuted">사용 연산 툴</span>
+                                <span id="specTools" class="font-bold text-studioInk">Rhino, Grasshopper</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Editorial Toast Message -->
+    <div id="toastAlert" class="fixed bottom-6 right-6 z-50 p-5 bg-studioInk text-studioBg border border-studioMuted shadow-2xl max-w-sm flex gap-3 items-center translate-y-24 opacity-0 transition-all duration-500 font-mono text-xs">
+        <span class="p-1 border border-studioBg rounded-full">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+        </span>
+        <div>
+            <h4 class="font-bold">TRANSMISSION COMPLETED</h4>
+            <p class="text-[9px] text-studioMuted mt-1">성공적으로 도면 의뢰 정보가 암호화되어 전송되었습니다.</p>
+        </div>
+    </div>
+
+
+    <!-- ADVANCED WEB GL & INTERACTION SCRIPTING -->
+    <script>
+        //        // Global Space Engine variables
+        let scene, camera, renderer, canopyGroup;
+        let activeLabStyle = 'steel-wire'; // Dynamic default style
+        
+        // Exquisite Architectural project dataset for Monograph Modals
+        const specDatabase = {
+            'void': {
+                title: 'The Void Monolith Art Museum',
+                category: 'CIVIC & CULTURAL ARCHITECTURE',
+                loc: '서울 상암 메트로폴리탄, 2026',
+                img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
+                desc1: '중정에 대한 과감한 음각 덜어내기(Subtractive Void) 구조를 통해, 거대한 외장 콘크리트 박스 안쪽으로 가변적인 해 그림자가 투영되도록 연출했습니다. 3중 중공 단열 유리를 통과해 떨어지는 자연 채광은 전시 동선에 따라 방문자의 감각적 환기를 유도합니다.',
+                desc2: '외측 매스 표면은 다중 연산 분석을 거쳐 바람의 집중 마찰이 걸리는 포인트를 기하학적으로 무디게 다듬었으며, 이를 통해 도심 고층 빌딩풍 마찰 계수를 종전 계획 대비 18% 경감했습니다.',
+                gfa: '3,450 ㎡',
+                struct: '노출 콘크리트 및 무주 포스트텐션 라멘조',
+                role: '설계 총괄 주임 (Principal Designer)',
+                tools: 'Rhino, Grasshopper, V-Ray, AutoCAD'
+            },
+            'basalt': {
+                title: 'Basalt Eco Wetland Library',
+                category: 'ECO & SUSTAINABLE DEVELOPMENT',
+                loc: '제주 구좌읍 생태 보호 지구, 2025',
+                img: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+                desc1: '제주 고유 암석지반의 거친 고저 차이에 완전히 순응하는 중복도식 단면 조형을 가집니다. 건물 골조는 제습 효율과 탄소 유출 관리가 뛰어난 친환경 목조 집성재(CLT) 공법을 선택해 친환경 도서관의 모델을 구축했습니다.',
+                desc2: '공기 대류 시뮬레이션 데이터를 입면 하부에 이중 흡입 기류 통로로 디자인하여 한여름에도 냉방 에너지 사용 부담을 완전 차단하는 등 패시브 디자인 기법을 정밀하게 완결지었습니다.',
+                gfa: '1,820 ㎡',
+                struct: '구조용 집성 탄화목구조 (CLT Systems)',
+                role: '기획 설계 및 단면 기하학 총괄',
+                tools: 'Revit, Ladybug Energy, Lumion'
+            },
+            'kinetic': {
+                title: 'Flow Dynamic Kinetic Tower',
+                category: 'PARAMETRIC STRUCTURES',
+                loc: '부산 해운대구 수영만 요트경기장, 2025',
+                img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1200&q=80',
+                desc1: '태양 궤적 분석 데이터를 모터 제어 회전 각도에 대응시켜, 서쪽에서 내리쬐는 직사광선을 최대로 밀어내는 입면 조절 자동 루버 파사드 구조입니다. 기후 환경에 유기적으로 대응하는 키네틱 입면을 실현했습니다.',
+                desc2: '알루미늄 유공 패널의 개폐율은 실내 조도 및 실시간 온도 센서와 유기적으로 결합되어 에너지를 자율 보존하는 지능형 스킨 테크놀로지를 완성했습니다.',
+                gfa: '42,000 ㎡',
+                struct: '초고강도 철근콘크리트 & 알루미늄 키네틱 파사드',
+                role: '컴퓨테이셔널 디자인 스페셜리스트 (Design Spec.)',
+                tools: 'Rhino, Grasshopper, Galvanized Control Script'
+            }
+        };
+
+        // Initialize Lucide Vector Icons
+        window.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            initThreeJS();
+            window.addEventListener('resize', onEngineResize);
+        });
+
+        // Toggle Responsive Nav
+        function toggleMenu() {
+            const nav = document.getElementById('mobileNav');
+            const icon = document.getElementById('navIcon');
+            if(nav.classList.contains('hidden')) {
+                nav.classList.remove('hidden');
+                icon.setAttribute('data-lucide', 'x');
+            } else {
+                nav.classList.add('hidden');
+                icon.setAttribute('data-lucide', 'menu');
+            }
+            lucide.createIcons();
+        }
+
+        // Phase Changer inside card (Micro-Interaction)
+        function changePhase(projectId, phase, imgSrc, event) {
+            event.stopPropagation(); // Stop click-through to modal
+            
+            const targetImg = document.getElementById(`view-${projectId}-img`);
+            targetImg.src = imgSrc;
+
+            // Reset phase button styling
+            const buttons = document.querySelectorAll(`.phase-btn-${projectId}`);
+            buttons.forEach(btn => {
+                btn.className = `phase-btn-${projectId} px-2 py-1 text-studioBg/70 hover:text-studioBg`;
+            });
+
+            // Make active state
+            event.currentTarget.className = `phase-btn-${projectId} px-2 py-1 bg-studioBg text-studioInk font-bold`;
+        }
+
+        // Filtering Logic for Editorial Works
+        function filterWorks(category) {
+            // Update active filters styling
+            const buttons = ['all', 'civic', 'ecology', 'parametric'];
+            buttons.forEach(btn => {
+                const el = document.getElementById(`filter-${btn}`);
+                if(btn === category) {
+                    el.className = "px-4 py-2 border border-studioInk bg-studioInk text-studioBg transition-all duration-300";
+                } else {
+                    el.className = "px-4 py-2 border border-studioBorder text-studioMuted hover:border-studioInk hover:text-studioInk transition-all duration-300";
+                }
+            });
+
+            const cards = document.querySelectorAll('.work-node');
+            cards.forEach(card => {
+                const cat = card.getAttribute('data-category');
+                if(category === 'all' || cat === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Spec Modal Operations
+        function openSpecModal(specId) {
+            const item = specDatabase[specId];
+            if(!item) return;
+
+            document.getElementById('modalImg').src = item.img;
+            document.getElementById('modalTitle').innerText = item.title;
+            document.getElementById('modalMeta').innerText = `CAT: ${item.category}`;
+            document.getElementById('modalLoc').innerHTML = `<i data-lucide="map-pin" class="w-3.5 h-3.5 inline mr-1"></i> ${item.loc}`;
+            document.getElementById('modalDesc1').innerText = item.desc1;
+            document.getElementById('modalDesc2').innerText = item.desc2;
+            document.getElementById('specGfa').innerText = item.gfa;
+            document.getElementById('specStruct').innerText = item.struct;
+            document.getElementById('specRole').innerText = item.role;
+            document.getElementById('specTools').innerText = item.tools;
+
+            const modal = document.getElementById('specModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            lucide.createIcons();
+        }
+
+        function closeSpecModal() {
+            document.getElementById('specModal').add('hidden'); // standard backup
+            const modal = document.getElementById('specModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('specModal').addEventListener('click', closeSpecModal);
+
+        // Contact Spec Form Handler
+        function handleInquirySubmit(event) {
+            event.preventDefault();
+
+            const toast = document.getElementById('toastAlert');
+            toast.classList.remove('translate-y-24', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            event.target.reset();
+
+            setTimeout(() => {
+                toast.classList.add('translate-y-24', 'opacity-0');
+                toast.classList.remove('translate-y-0', 'opacity-100');
+            }, 4500);
+        }
+
+
+        //        function initThreeJS() {
+            const container = document.getElementById('threeEngineContainer');
+            if(!container) return;
+
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+
+            // Setup high fidelity environment
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0xffffff, 0.015);
+
+            camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+            camera.position.set(12, 14, 18);
+            camera.lookAt(0, 0, 0);
+
+            // Antialiasing for clean crisp vector-like edges
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setClearColor(0xffffff, 1);
+
+            container.appendChild(renderer.domElement);
+
+            // Lighting Rig (Museum Gallery Daylight)
+            const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+            scene.add(ambient);
+
+            const skyLight = new THREE.DirectionalLight(0xffffff, 0.8);
+            skyLight.position.set(10, 25, 10);
+            skyLight.castShadow = true;
+            skyLight.shadow.mapSize.width = 2048;
+            skyLight.shadow.mapSize.height = 2048;
+            skyLight.shadow.bias = -0.0001;
+            scene.add(skyLight);
+
+            // Soft backfill highlight light (Drafting blueprint accent)
+            const backfill = new THREE.PointLight(0x71717a, 1.2, 40);
+            backfill.position.set(-10, 5, -10);
+            scene.add(backfill);
+
+            // Minimalist Grid Base representation
+            const groundGrid = new THREE.GridHelper(30, 60, 0x18181b, 0xe4e4e7);
+            groundGrid.position.y = -2;
+            scene.add(groundGrid);
+
+            canopyGroup = new THREE.Group();
+            scene.add(canopyGroup);
+
+            // Initial Procedural Generation
+            generateParametricCanopy();
+
+            // Link sliders
+            document.getElementById('waveAmp').addEventListener('input', (e) => {
+                document.getElementById('waveVal').innerText = `${e.target.value} A`;
+                generateParametricCanopy();
+            });
+
+            document.getElementById('ribCount').addEventListener('input', (e) => {
+                document.getElementById('ribVal').innerText = `${e.target.value} Ribs`;
+                generateParametricCanopy();
+            });
+
+            document.getElementById('morphTwist').addEventListener('input', (e) => {
+                document.getElementById('twistVal').innerText = `${e.target.value} rad`;
+                generateParametricCanopy();
+            });
+
+            // Start Main Loop
+            animate();
+
+            // Setup Custom Orbit Controls for easy rotation and zoom
+            let isDragging = false;
+            let prevMousePos = { x: 0, y: 0 };
+
+            container.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                prevMousePos = { x: e.clientX, y: e.clientY };
+            });
+
+            window.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+
+            container.addEventListener('mousemove', (e) => {
+                if(!isDragging) return;
+                const delta = {
+                    x: e.clientX - prevMousePos.x,
+                    y: e.clientY - prevMousePos.y
+                };
+
+                canopyGroup.rotation.y += delta.x * 0.005;
+                canopyGroup.rotation.x += delta.y * 0.005;
+
+                prevMousePos = { x: e.clientX, y: e.clientY };
+            });
+
+            // Touch support for Mobile
+            container.addEventListener('touchstart', (e) => {
+                if(e.touches.length === 1) {
+                    isDragging = true;
+                    prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            });
+
+            container.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+
+            container.addEventListener('touchmove', (e) => {
+                if(!isDragging || e.touches.length !== 1) return;
+                const delta = {
+                    x: e.touches[0].clientX - prevMousePos.x,
+                    y: e.touches[0].clientY - prevMousePos.y
+                };
+
+                canopyGroup.rotation.y += delta.x * 0.007;
+                canopyGroup.rotation.x += delta.y * 0.007;
+
+                prevMousePos = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            });
+        }
+
+
+        //        function generateParametricCanopy() {
+            // Sweep clean existing geometry buffers
+            while(canopyGroup.children.length > 0) {
+                const child = canopyGroup.children[0];
+                canopyGroup.remove(child);
+            }
+
+            const waveAmpVal = parseFloat(document.getElementById('waveAmp').value);
+            const ribCountVal = parseInt(document.getElementById('ribCount').value);
+            const twistVal = parseFloat(document.getElementById('morphTwist').value);
+
+            // Constructing an elegant double-curved structural ribbed surface (Sinusoidal Pavilion Canopy)
+            const width = 10;
+            const length = 10;
+            const segmentCount = 40;
+
+            for(let i = 0; i < ribCountVal; i++) {
+                // Determine layout along axis i
+                const x = (i / (ribCountVal - 1)) * width - (width / 2);
+                const points = [];
+
+                // Generate curved contour line
+                for(let j = 0; j <= segmentCount; j++) {
+                    const z = (j / segmentCount) * length - (length / 2);
+                    
+                    // Multi-wave calculation simulating structural force deformation
+                    const angleY = (j / segmentCount) * Math.PI * 2;
+                    const warpFactor = Math.sin(angleY) * waveAmpVal * 2;
+                    
+                    // Twist rotation matrix applied inside coordinate generators
+                    const twistRad = (x * twistVal) * 0.15;
+                    const rotCos = Math.cos(twistRad);
+                    const rotSin = Math.sin(twistRad);
+
+                    const finalY = warpFactor + (Math.cos(angleY * 0.5) * 1.5) - 1.0;
+                    
+                    // Rotated coordinate positions
+                    const rotatedX = x * rotCos - z * rotSin;
+                    const rotatedZ = x * rotSin + z * rotCos;
+
+                    points.push(new THREE.Vector3(rotatedX, finalY, rotatedZ));
+                }
+
+                // Create individual rib tube geometry
+                const curve = new THREE.CatmullRomCurve3(points);
+                
+                let ribGeometry;
+                let ribMaterial;
+
+                // Adjust fabrication style material mapping
+                if(activeLabStyle === 'steel-wire') {
+                    // Fine steel structure with glowing wire mesh look
+                    ribGeometry = new THREE.TubeGeometry(curve, 32, 0.08, 6, false);
+                    ribMaterial = new THREE.MeshStandardMaterial({
+                        color: 0x18181b, // Jet black heavy steel
+                        roughness: 0.15,
+                        metalness: 0.95
+                    });
+                } else if(activeLabStyle === 'clt-slab') {
+                    // Heavy modular wooden laminated ribs
+                    ribGeometry = new THREE.TubeGeometry(curve, 32, 0.22, 4, false); // Rectangular structural appearance
+                    ribMaterial = new THREE.MeshStandardMaterial({
+                        color: 0xaf8c46, // Warm laminated plywood/timber
+                        roughness: 0.7,
+                        metalness: 0.0
+                    });
+                } else if(activeLabStyle === 'etfe-skin') {
+                    // Futuristic ETFE transparent polymer inflated panels
+                    ribGeometry = new THREE.TubeGeometry(curve, 32, 0.12, 8, false);
+                    ribMaterial = new THREE.MeshPhysicalMaterial({
+                        color: 0x18181b,
+                        transparent: true,
+                        opacity: 0.8,
+                        transmission: 0.8,
+                        roughness: 0.02,
+                        metalness: 0.2,
+                        thickness: 1.0
+                    });
+                }
+
+                const ribMesh = new THREE.Mesh(ribGeometry, ribMaterial);
+                ribMesh.castShadow = true;
+                ribMesh.receiveShadow = true;
+                canopyGroup.add(ribMesh);
+
+                // If ETFE mesh style, overlay transparent tension sheets
+                if(activeLabStyle === 'etfe-skin' && i < ribCountVal - 1) {
+                    // Construct structural skin elements between ribs
+                    const panelGeometry = new THREE.BufferGeometry();
+                    const vertices = [];
+                    const indices = [];
+
+                    // Sample j slices for neighboring ribs to form a double curved quad sheet
+                    const nextX = ((i + 1) / (ribCountVal - 1)) * width - (width / 2);
+                    const nextPoints = [];
+
+                    for(let j = 0; j <= segmentCount; j++) {
+                        const z = (j / segmentCount) * length - (length / 2);
+                        const angleY = (j / segmentCount) * Math.PI * 2;
+                        const warpFactor = Math.sin(angleY) * waveAmpVal * 2;
+                        const twistRad = (nextX * twistVal) * 0.15;
+                        const rotCos = Math.cos(twistRad);
+                        const rotSin = Math.sin(twistRad);
+
+                        const finalY = warpFactor + (Math.cos(angleY * 0.5) * 1.5) - 1.0;
+                        
+                        nextPoints.push(new THREE.Vector3(
+                            nextX * rotCos - z * rotSin,
+                            finalY,
+                            nextX * rotSin + z * rotCos
+                        ));
+                    }
+
+                    // Build triangulated panels between curves
+                    for(let j = 0; j < segmentCount; j++) {
+                        const p1 = points[j];
+                        const p2 = nextPoints[j];
+                        const p3 = points[j+1];
+                        const p4 = nextPoints[j+1];
+
+                        // Push vertex triangles
+                        vertices.push(p1.x, p1.y, p1.z); // index 0
+                        vertices.push(p2.x, p2.y, p2.z); // index 1
+                        vertices.push(p3.x, p3.y, p3.z); // index 2
+                        vertices.push(p4.x, p4.y, p4.z); // index 3
+
+                        const offset = j * 4;
+                        indices.push(offset, offset + 1, offset + 2);
+                        indices.push(offset + 1, offset + 3, offset + 2);
+                    }
+
+                    panelGeometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+                    panelGeometry.setIndex(indices);
+                    panelGeometry.computeVertexNormals();
+
+                    const panelMat = new THREE.MeshPhysicalMaterial({
+                        color: 0x93c5fd, // Sky light glass tint
+                        transparent: true,
+                        opacity: 0.35,
+                        transmission: 0.9,
+                        roughness: 0.05,
+                        side: THREE.DoubleSide
+                    });
+
+                    const panelMesh = new THREE.Mesh(panelGeometry, panelMat);
+                    canopyGroup.add(panelMesh);
+                }
+            }
+        }
+
+        // Toggle Fabrication materials
+        function setLabMaterial(style) {
+            activeLabStyle = style;
+
+            const btns = ['wire', 'clt', 'etfe'];
+            btns.forEach(btn => {
+                const el = document.getElementById(`lab-${btn}`);
+                if(style.includes(btn)) {
+                    el.className = "py-3 border border-studioInk bg-studioInk text-studioBg font-bold transition";
+                } else {
+                    el.className = "py-3 border border-studioBorder text-studioMuted hover:text-studioInk hover:border-studioInk transition";
+                }
+            });
+
+            generateParametricCanopy();
+        }
+
+        // Dynamic viewport resize handler
+        function onEngineResize() {
+            const container = document.getElementById('threeEngineContainer');
+            if(!container || !camera || !renderer) return;
+
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(w, h);
+        }
+
+
+        //        function animate() {
+            requestAnimationFrame(animate);
+
+            // Subtle rotation sweep for interactive life feedback
+            if(canopyGroup && !scene.userData.isDragging) {
+                canopyGroup.rotation.y += 0.0012;
+            }
+
+            if(renderer && scene && camera) {
+                renderer.render(scene, camera);
+            }
+        }
+    </script>
+</body>
+</html>
