@@ -486,56 +486,40 @@
 
     <!-- Monograph Chapter 05: Visitor Register (Guestbook) -->
     <section id="guestbook" class="py-24 border-t border-b border-studioBorder bg-white">
-        <div class="max-w-[1600px] mx-auto px-6 lg:px-12">
-            <div class="grid lg:grid-cols-12 gap-12 items-start">
-                
-                <!-- Left Side: Editorial Introduction to the Live Ledger -->
-                <div class="lg:col-span-4 space-y-6 lg:sticky lg:top-28">
-                    <span class="font-sans text-xs text-studioAccent tracking-widest font-extrabold block">CHAPTER V // VISITOR REGISTER</span>
+        <div class="max-w-[1600px] mx-auto px-6 lg:px-12 space-y-10">
+            
+            <!-- Technical Header Block -->
+            <div class="space-y-4">
+                <span class="font-sans text-xs text-studioAccent tracking-widest font-extrabold block">CHAPTER V // VISITOR REGISTER</span>
+                <div class="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-6">
                     <h2 class="text-3xl sm:text-5xl font-sans font-extrabold text-studioInk leading-[1.1]">The Live Collaborative Ledger</h2>
-                    <p class="text-[13px] sm:text-sm text-studioMuted leading-relaxed font-medium">
-                        홍장미 건축가님의 아카이브 및 디자인 연구에 관한 실시간 감상과 응원의 메시지를 남겨보세요. 아래의 라이브 패들릿(Padlet) 캔버스를 통해 아이디어를 실시간으로 기록하고 전 세계 디자이너들과 즉각적으로 소통할 수 있습니다.
+                    <p class="text-[13px] sm:text-sm text-studioMuted leading-relaxed font-medium max-w-xl">
+                        홍장미 건축가님의 아카이브 및 디자인 연구에 관한 실시간 감상과 응원의 메시지를 남겨보세요. 아래의 라이브 패들릿(Padlet) 캔버스는 페이지 내에서 즉각적으로 작동하며 실시간으로 동기화됩니다.
                     </p>
+                </div>
+            </div>
 
-                    <!-- Interactive Status Bar -->
-                    <div class="p-4 border border-studioBorder bg-studioBg font-sans text-[11px] font-bold space-y-2">
-                        <div class="flex justify-between items-center">
-                            <span class="text-studioMuted uppercase">LEDGER MODULE</span>
-                            <span class="text-emerald-600 font-extrabold flex items-center gap-1">
-                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse"></span> LIVE SYNCED
-                            </span>
-                        </div>
-                        <p class="text-studioInk text-[12px] font-medium leading-relaxed">
-                            패들릿 캔버스가 우측 화면에 임베드되어 있으며, 모바일 환경이나 전체 화면 작성을 원하시면 아래 버튼을 통해 바로 접속하실 수 있습니다.
+            <!-- Giant Full-Width Padlet Embed Viewport (No clicks required, fully exposed) -->
+            <div class="border border-studioBorder bg-studioBg p-2 shadow-sm rounded-sm overflow-hidden flex flex-col h-[750px] w-full">
+                <div class="flex justify-between items-center px-4 py-3 border-b border-studioBorder bg-white">
+                    <h4 class="font-sans text-xs text-studioInk font-extrabold tracking-widest flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-4 h-4 text-studioAccent"></i> LIVE PADLET ARCHIVE
+                    </h4>
+                    <span class="font-sans text-[10px] text-emerald-600 tracking-wider uppercase font-bold flex items-center gap-1.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE SYNCED
+                    </span>
+                </div>
+
+                <!-- Embed Iframe loaded directly -->
+                <div class="relative flex-1 bg-white">
+                    <div class="padlet-embed" style="border:1px solid rgba(0,0,0,0.1);border-radius:2px;box-sizing:border-box;overflow:hidden;position:relative;width:100%;background:#F4F4F4">
+                        <p style="padding:0;margin:0">
+                            <iframe src="https://padlet.com/embed/fl420nelsl6rdhqm" frameborder="0" allow="camera;microphone;geolocation;display-capture;clipboard-write" style="width:100%;height:608px;display:block;padding:0;margin:0"></iframe>
                         </p>
                     </div>
-
-                    <a href="https://padlet.com/wkdal3092/rose-y0g0j4vtvm9u2hqi" target="_blank" rel="noopener noreferrer" 
-                       class="w-full bg-studioInk text-studioBg font-sans text-xs tracking-wider font-bold py-4 hover:opacity-90 transition flex items-center justify-center gap-2"
-                       onclick="playTactileSound('success')">
-                        OPEN IN FULL WINDOW <i data-lucide="external-link" class="w-4 h-4"></i>
-                    </a>
                 </div>
-
-                <!-- Right Side: Beautiful Padlet Embed Viewport -->
-                <div class="lg:col-span-8 border border-studioBorder bg-studioBg p-2 shadow-sm rounded-sm overflow-hidden flex flex-col h-[650px]">
-                    <div class="flex justify-between items-center px-4 py-3 border-b border-studioBorder bg-white">
-                        <h4 class="font-sans text-xs text-studioInk font-extrabold tracking-widest flex items-center gap-2">
-                            <i data-lucide="book-open" class="w-4 h-4 text-studioAccent"></i> LIVE PADLET ARCHIVE
-                        </h4>
-                        <span class="font-sans text-[10px] text-studioMuted tracking-wider uppercase font-bold">STATION: wkdal3092 // ROSE</span>
-                    </div>
-
-                    <!-- Embed Iframe with responsive height -->
-                    <div class="relative flex-1 bg-white">
-                        <iframe src="https://padlet.com/embed/wkdal3092/rose-y0g0j4vtvm9u2hqi" 
-                                class="w-full h-full border-0" 
-                                allow="camera; microphone; geolocation" 
-                                allowfullscreen></iframe>
-                    </div>
-                </div>
-
             </div>
+
         </div>
     </section>
 
